@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>Faturas Page</title>
+    </h:head>
+    <h:body>
+        <h:form id="afForm">
+            <p:menubar> 
+                <p:menuitem value="Home Page" outcome="UserProductsPage" /> 
+                <p:submenu label="Products">
+                    <p:menuitem value="Check My Products" outcome="UserMyProducts" />
+                    <p:separator />
+                    <p:menuitem value="Create New Product" outcome="UserCreateProduct" />
+                    <p:separator />
+                    <p:menuitem value="Update Products"  outcome="UserUpdateProduct" />
+                    <p:separator />
+                    <p:menuitem value="Delete Products"  outcome="UserDeleteProduct" />
+                </p:submenu>
+                <p:menuitem value="Faturas" outcome="UserFaturasPage" />
+            </p:menubar><br/>
+            <p:growl id="msg" showDetail="true" life="3000" />
+            <p:dataTable var="fatura" value="#{faturaDAO.MyFaturas()}"> <!-- gets all faturas from the logged employee -->
+                <p:column headerText="FaturaId">
+                    <h:outputText value="#{fatura.faturaid}" /> <!-- displays faturaid -->
+                </p:column>
+
+                <p:column headerText="EmployeeId">
+                    <h:outputText value="#{fatura.employee.employeeid}" />  <!-- displays employee id -->
+                </p:column>
+                
+                <p:column headerText="EmissionDate">
+                    <h:outputText value="#{fatura.emissiondate}" /> <!-- displays emissiondate -->
+                </p:column>
+                
+                <p:column headerText="Total">
+                    <h:outputText value="#{fatura.total}" />    <!-- displays total -->
+                </p:column>
+                
+                <p:column headerText="Products">        
+                    <p:selectOneMenu style="width:150px">
+                        <f:selectItem itemLabel="Products List" itemValue="" noSelectionOption="true" />
+                        <f:selectItems value="#{fatura.products}" />  <!-- displays products -->
+                    </p:selectOneMenu>
+                </p:column>
+                
+            </p:dataTable>
+            
+            <p:panel header="Creating Fatura" style="width: 360px;">
+ 
+                <h:panelGrid id="fPanel" columns="">
+                    <p:commandButton action="#{faturaDAO.CreateFatura()}" value="Create new Fatura" update="afForm" ajax="true"></p:commandButton>  <!-- executes CreateFatura() method-->
+                </h:panelGrid>
+ 
+            </p:panel>
+            <p:panel header="Adding Products to Fatura" style="width: 360px;">
+ 
+                <h:panelGrid id="pPanel" columns="">
+                    
+                    <h:panelGrid columns="" cellpadding="">
+                        
+                        <p:selectOneMenu id="faturaId" value="#{faturaDAO.faturaId}" style="width:150px">     <!-- sends the selected value of the drop-down list to faturaDAO -->
+                            <f:selectItem itemLabel="Select Fatura" itemValue="" noSelectionOption="true" />
+                            <f:selectItems value="#{faturaDAO.SelectFaturaId()}" />  <!-- displays all faturas from the logged user in a drop-down list -->
+                        </p:selectOneMenu>
+                        
+                        <p:spacer></p:spacer>
+                        
+                        <p:outputLabel for="categoryName" value="Categories: " />
+
+                        <p:selectOneMenu id="categoryName" value="#{faturaDAO.categoryName}" style="width:150px">    <!-- Whatever the user chooses from the drop-down list will be sent to Java so it can be passed to the DB -->
+                            <p:ajax update="productName" />
+                            <f:selectItem itemLabel="Select Category" itemValue="" noSelectionOption="true" />
+                            <f:selectItems value="#{faturaDAO.allCategories}" />  <!-- Displays all the categories existent in DB in a drop-down list -->
+                        </p:selectOneMenu>
+
+                        <p:outputLabel for="productName" value="ProductName " />
+                        <p:selectOneMenu id="productName" value="#{faturaDAO.productName}" style="width:150px">    <!-- Whatever the user chooses from the drop-down list will be sent to Java so it can be passed to the DB -->
+                            <f:selectItem itemLabel="Select ProductName" itemValue="" noSelectionOption="true" />
+                            <f:selectItems value="#{faturaDAO.allProductsName}" />   <!-- Displays all the products name existent in DB in a drop-down list -->
+                        </p:selectOneMenu>
+                        
+                    </h:panelGrid>
+                    
+                    <h:outputText value="Quantity" />
+ 
+                    <p:inputText id="quantity" value="#{faturaDAO.amountOfProducts}" ></p:inputText>    <!-- Whatever the user inputs will be sent to Java so it can be passed to the DB -->
+ 
+                    <p:spacer></p:spacer>
+ 
+                    <p:message for="quantity"></p:message>
+ 
+                    <p:spacer></p:spacer>
+                    
+                    <p:spacer></p:spacer>
+ 
+                    <p:commandButton action="#{faturaDAO.AddProductToFatura()}" value="Add Product to Fatura" update="afForm" ajax="true"></p:commandButton>    <!-- Calls the AddProductToFatura() method from FaturaDAO class -->
+                </h:panelGrid>
+            </p:panel>
+        </h:form>
+    </h:body> 
+</html>

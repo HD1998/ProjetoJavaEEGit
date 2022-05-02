@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Admin Page</title>
+    </h:head>
+    <h:body>
+        <h:form>       
+            <p:menubar> 
+                <p:menuitem value="Home Page" outcome="AdminProductsPage" /> 
+                <p:submenu label="Products">
+                    <p:menuitem value="Check My Products" outcome="AdminMyProducts" />
+                    <p:separator />
+                    <p:menuitem value="Create New Product" outcome="AdminCreateProduct" />
+                    <p:separator />
+                    <p:menuitem value="Update Products"  outcome="AdminUpdateProduct" />
+                    <p:separator />
+                    <p:menuitem value="Delete Products"  outcome="AdminDeleteProduct" />
+                </p:submenu>
+                <p:submenu label="Categories">
+                    <p:menuitem value="Create New Category" outcome="AdminCreateCategory" />
+                    <p:separator />
+                    <p:menuitem value="Update Categories" outcome="AdminUpdateCategory" />
+                    <p:separator />
+                    <p:menuitem value="Delete Categories" outcome="AdminDeleteCategory" />
+                </p:submenu>
+                <p:submenu label="SubCategories">
+                    <p:menuitem value="Create New SubCategory" outcome="AdminCreateSubCategory" />
+                    <p:separator />
+                    <p:menuitem value="Update SubCategories" outcome="AdminUpdateSubCategory" />
+                    <p:separator />
+                    <p:menuitem value="Delete SubCategories" outcome="AdminDeleteSubCategory" />
+                </p:submenu>
+                <p:menuitem value="Faturas" outcome="AdminFaturasPage" />
+            </p:menubar><br/>
+            <p:dataTable var="product" value="#{productDAO.allProducts}"> <!-- finds all products -->
+                <p:column headerText="ProductId">
+                    <h:outputText value="#{product.productid}" /> <!-- Displays the productid for that Product -->
+                </p:column>
+
+                <p:column headerText="ProductName">
+                    <h:outputText value="#{product.productname}" /> <!-- Displays the productname for that Product -->
+                </p:column>
+
+                <p:column headerText="Category">
+                    <h:outputText value="#{product.category.categoryname}" /> <!-- Displays the categoryname for that Product -->
+                </p:column>
+
+                <p:column headerText="SubCategory">
+                    <h:outputText value="#{product.subcategory.subcategoryname}" />   <!-- Displays the subcategoryname for that Product -->
+                </p:column>
+                
+                <p:column headerText="EmployeeId">
+                    <h:outputText value="#{product.employee.employeeid}" />   <!-- Displays the employeeid for that Product -->
+                </p:column>
+                
+                <p:column headerText="Price">
+                    <h:outputText value="#{product.price}" />  <!-- Displays the price for that Product -->
+                </p:column>
+                
+                <p:column headerText="Stock">
+                    <h:outputText value="#{product.stock}" />  <!-- Displays the stock for that Product -->
+                </p:column>
+            </p:dataTable>
+            <p:commandButton action="#{employeeDAO.Logout()}" value="Logout"  ajax="false"></p:commandButton>   <!-- Logs out of the app ( goes to the login page) -->
+        </h:form>
+    </h:body>
+</html>

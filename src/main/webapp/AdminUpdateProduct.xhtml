@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Update Products Admin Page</title>
+    </h:head>
+    <h:body>
+        <h:form id="upForm">
+            <p:menubar> 
+                <p:menuitem value="Home Page" outcome="AdminProductsPage" /> 
+                <p:submenu label="Products">
+                    <p:menuitem value="Check My Products" outcome="AdminMyProducts" />
+                    <p:separator />
+                    <p:menuitem value="Create New Product" outcome="AdminCreateProduct" />
+                    <p:separator />
+                    <p:menuitem value="Update Products"  outcome="AdminUpdateProduct" />
+                    <p:separator />
+                    <p:menuitem value="Delete Products"  outcome="AdminDeleteProduct" />
+                </p:submenu>
+                <p:submenu label="Categories">
+                    <p:menuitem value="Create New Category" outcome="AdminCreateCategory" />
+                    <p:separator />
+                    <p:menuitem value="Update Categories" outcome="AdminUpdateCategory" />
+                    <p:separator />
+                    <p:menuitem value="Delete Categories" outcome="AdminDeleteCategory" />
+                </p:submenu>
+                <p:submenu label="SubCategories">
+                    <p:menuitem value="Create New SubCategory" outcome="AdminCreateSubCategory" />
+                    <p:separator />
+                    <p:menuitem value="Update SubCategories" outcome="AdminUpdateSubCategory" />
+                    <p:separator />
+                    <p:menuitem value="Delete SubCategories" outcome="AdminDeleteSubCategory" />
+                </p:submenu>
+                <p:menuitem value="Faturas" outcome="AdminFaturasPage" />
+            </p:menubar><br/>
+            <p:growl id="msg" showDetail="true" life="3000" />
+            <p:dataTable var="product" value="#{productDAO.allProducts}">   <!-- finds all products -->
+                <p:column headerText="ProductId">
+                    <h:outputText value="#{product.productid}" />   <!-- Displays the productid for that Product -->
+                </p:column>
+
+                <p:column headerText="ProductName">
+                    <h:outputText value="#{product.productname}" /> <!-- Displays the productname for that Product -->
+                </p:column>
+                
+                <p:column headerText="Category">
+                    <h:outputText value="#{product.category.categoryname}" />   <!-- Displays the categoryname for that Product -->
+                </p:column>
+                
+                <p:column headerText="SubCategory">
+                    <h:outputText value="#{product.subcategory.subcategoryname}" /> <!-- Displays the subcategoryname for that Product -->
+                </p:column>
+                
+                <p:column headerText="EmployeeId">
+                    <h:outputText value="#{product.employee.employeeid}" /> <!-- Displays the employeeid for that Product -->
+                </p:column>
+                
+                <p:column headerText="Price">
+                    <h:outputText value="#{product.price}" />   <!-- Displays the price for that Product -->
+                </p:column>
+                
+                <p:column headerText="Stock">
+                    <h:outputText value="#{product.stock}" />   <!-- Displays the stock for that Product -->
+                </p:column>
+                
+            </p:dataTable><br/>
+            <p:panel header="UpdatingProducts" style="width: 360px;">
+ 
+                <h:panelGrid id="upPanel" columns="">
+                    
+                    <p:selectOneMenu id="productId" value="#{productDAO.productId}" style="width:150px">    <!-- Whatever the user chooses from the drop-down list will be sent to Java so it can be passed to the DB -->
+                        <f:selectItem itemLabel="Select Product" itemValue="" noSelectionOption="true" />
+                        <f:selectItems value="#{productDAO.SelectProductsIdForAdmin()}" /> <!-- Displays all the products Ids existent in the DB in a drop-down list -->
+                    </p:selectOneMenu>
+                    
+                    <h:outputText value="Product Name" />
+ 
+                    <p:inputText id="productName" value="#{productDAO.productName}" required = "true"></p:inputText>    <!-- Whatever the user inputs will be sent to Java so it can be passed to the DB -->
+ 
+                    <p:spacer></p:spacer>
+ 
+                    <p:message for="productName"></p:message>
+ 
+                    <p:spacer></p:spacer>
+                    
+                    <h:panelGrid columns="2" cellpadding="5">
+                        <p:outputLabel for="categoryName" value="Categories: " />
+
+                        <p:selectOneMenu id="categoryName" value="#{productDAO.categoryName}" style="width:150px">  <!-- Whatever the user chooses from the drop-down list will be sent to Java so it can be passed to the DB -->
+                            <p:ajax update="subCategoryName" />
+                            <f:selectItem itemLabel="Select Category" itemValue="" noSelectionOption="true" />
+                            <f:selectItems value="#{productDAO.allCategories}" /> <!-- Displays all the categories existent in the DB in a drop-down list -->
+                        </p:selectOneMenu>
+
+                        <p:outputLabel for="subCategoryName" value="SubCategories: " />
+                        <p:selectOneMenu id="subCategoryName" value="#{productDAO.subCategoryName}" style="width:150px"> <!-- Whatever the user chooses from the drop-down list will be sent to Java so it can be passed to the DB -->
+                            <f:selectItem itemLabel="Select SubCategory" itemValue="" noSelectionOption="true" />
+                            <f:selectItems value="#{productDAO.allSubcategories}" />   <!-- Displays all the subcategories existent in the DB in a drop-down list -->
+                        </p:selectOneMenu>
+                        
+                    </h:panelGrid>
+                    <p:separator />
+                    
+                    <p:spacer></p:spacer>
+ 
+                    <h:outputText value="Price" />
+ 
+                    <p:inputText id="price" value="#{productDAO.price}" required = "true"></p:inputText>    <!-- Whatever the user inputs will be sent to Java so it can be passed to the DB -->
+ 
+                    <p:spacer></p:spacer>
+ 
+                    <p:message for="price"></p:message>
+ 
+                    <p:spacer></p:spacer>
+                    
+                    <h:outputText value="Stock" />
+ 
+                    <p:inputText id="stock" value="#{productDAO.stock}" required = "true"></p:inputText>    <!-- Whatever the user inputs will be sent to Java so it can be passed to the DB -->
+ 
+                    <p:spacer></p:spacer>
+ 
+                    <p:message for="stock"></p:message>
+ 
+                    <p:spacer></p:spacer>
+ 
+                    <p:commandButton action="#{productDAO.UpdateProduct()}" value="Update Product" update="upForm" ajax="true"></p:commandButton>   <!-- Calls the UpdateProduct() method from ProductDAO class -->
+                </h:panelGrid>
+            </p:panel>
+        </h:form>
+    </h:body> 
+</html>

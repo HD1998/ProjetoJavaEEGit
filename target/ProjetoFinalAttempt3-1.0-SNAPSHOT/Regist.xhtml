@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Regist</title>
+    </h:head>
+    <h:body>
+        <h:form id="registForm">          
+            <p:growl id="msg" showDetail="true" life="3000" />
+            <p:panel header="Regist" style="width: 360px;">
+ 
+                <h:panelGrid id="registPanel" columns="">
+ 
+                    <h:outputText value="Name" />
+ 
+                    <p:inputText id="name" value="#{employeeDAO.employeeName}" required = "true"></p:inputText> <!-- sends the user input to employeeDAO -->
+ 
+                    <p:spacer></p:spacer>
+ 
+                    <p:message for="name" ></p:message>
+                    
+                    <h:outputText value="Email" />
+ 
+                    <p:inputText id="email" value="#{employeeDAO.email}" required = "true"></p:inputText>   <!-- sends the user input to employeeDAO -->
+ 
+                    <p:spacer></p:spacer>
+ 
+                    <p:message for="email"></p:message>
+ 
+                    <p:spacer></p:spacer>
+ 
+                    <h:outputText value="Password" />
+ 
+                    <p:password id="password" value="#{employeeDAO.password}" required = "true" feedback="false"></p:password>  <!-- sends the user input to employeeDAO -->
+ 
+                    <p:spacer></p:spacer>
+ 
+                    <p:message for="password"></p:message>
+ 
+                    <p:spacer></p:spacer>
+ 
+                    <p:commandButton action="#{employeeDAO.Regist()}" value="Regist" update="registForm" ajax="true"></p:commandButton> <!-- executes the Regist() method -->
+                    <p>Already have an account?</p>
+                    <a href="Login.xhtml">Login</a>
+                </h:panelGrid>
+            </p:panel>
+        </h:form>
+    </h:body> 
+</html>

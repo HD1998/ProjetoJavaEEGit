@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Delete SubCategories Admin Page</title>
+    </h:head>
+    <h:body>
+        <h:form id = "dscForm">
+            <p:menubar> 
+                <p:menuitem value="Home Page" outcome="AdminProductsPage" /> 
+                <p:submenu label="Products">
+                    <p:menuitem value="Check My Products" outcome="AdminMyProducts" />
+                    <p:separator />
+                    <p:menuitem value="Create New Product" outcome="AdminCreateProduct" />
+                    <p:separator />
+                    <p:menuitem value="Update Products"  outcome="AdminUpdateProduct" />
+                    <p:separator />
+                    <p:menuitem value="Delete Products"  outcome="AdminDeleteProduct" />
+                </p:submenu>
+                <p:submenu label="Categories">
+                    <p:menuitem value="Create New Category" outcome="AdminCreateCategory" />
+                    <p:separator />
+                    <p:menuitem value="Update Categories" outcome="AdminUpdateCategory" />
+                    <p:separator />
+                    <p:menuitem value="Delete Categories" outcome="AdminDeleteCategory" />
+                </p:submenu>
+                <p:submenu label="SubCategories">
+                    <p:menuitem value="Create New SubCategory" outcome="AdminCreateSubCategory" />
+                    <p:separator />
+                    <p:menuitem value="Update SubCategories" outcome="AdminUpdateSubCategory" />
+                    <p:separator />
+                    <p:menuitem value="Delete SubCategories" outcome="AdminDeleteSubCategory" />
+                </p:submenu>
+                <p:menuitem value="Faturas" outcome="AdminFaturasPage" />
+            </p:menubar><br/>
+            <p:growl id="msg" showDetail="true" life="3000" />
+            <p:dataTable var="subcategory" value="#{subCategoryDAO.allSubcategories}">   <!-- Receives all subcategories in DB -->
+                
+                <p:column headerText="SubCategoryId">
+                    <h:outputText value="#{subcategory.subcategoryid}" />   <!-- Displays subcategoryid -->
+                </p:column>
+
+                <p:column headerText="SubCategoryName">
+                    <h:outputText value="#{subcategory.subcategoryname}" /> <!-- Displays subcategoryname -->
+                </p:column>
+                
+            </p:dataTable><br/>
+            
+            <p:panel header="Deleting SubCategories" style="width: 360px;">
+                <h:panelGrid id="dscPanel" columns="">
+                    <p:selectOneMenu id="subCategoryIdcategoryId" value="#{subCategoryDAO.subCategoryId}" style="width:150px">     <!-- sends the selected value in the drop-down to subCategoryDAO -->
+                        <f:selectItem itemLabel="Select SubCategory" itemValue="" noSelectionOption="true" />
+                        <f:selectItems value="#{subCategoryDAO.SelectSubCategoriesId()}" />  <!-- Receives the subcategoryid for every category in DB -->
+                    </p:selectOneMenu>
+ 
+                    <p:spacer></p:spacer>
+ 
+                    <p:commandButton action="#{subCategoryDAO.DeleteSubCategory()}" value="Delete SubCategory" update="dscForm" ajax="true"></p:commandButton>   <!-- calls DeleteCategory() method -->
+                </h:panelGrid>
+            </p:panel>
+        </h:form>
+    </h:body> 
+</html>

@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Categories Page</title>
+    </h:head>
+    <h:body>
+        <h:form id="ccForm">
+            <p:menubar> 
+                <p:menuitem value="Home Page" outcome="AdminProductsPage" /> 
+                <p:submenu label="Products">
+                    <p:menuitem value="Check My Products" outcome="AdminMyProducts" />
+                    <p:separator />
+                    <p:menuitem value="Create New Product" outcome="AdminCreateProduct" />
+                    <p:separator />
+                    <p:menuitem value="Update Products"  outcome="AdminUpdateProduct" />
+                    <p:separator />
+                    <p:menuitem value="Delete Products"  outcome="AdminDeleteProduct" />
+                </p:submenu>
+                <p:submenu label="Categories">
+                    <p:menuitem value="Create New Category" outcome="AdminCreateCategory" />
+                    <p:separator />
+                    <p:menuitem value="Update Categories" outcome="AdminUpdateCategory" />
+                    <p:separator />
+                    <p:menuitem value="Delete Categories" outcome="AdminDeleteCategory" />
+                </p:submenu>
+                <p:submenu label="SubCategories">
+                    <p:menuitem value="Create New SubCategory" outcome="AdminCreateSubCategory" />
+                    <p:separator />
+                    <p:menuitem value="Update SubCategories" outcome="AdminUpdateSubCategory" />
+                    <p:separator />
+                    <p:menuitem value="Delete SubCategories" outcome="AdminDeleteSubCategory" />
+                </p:submenu>
+                <p:menuitem value="Faturas" outcome="AdminFaturasPage" />
+            </p:menubar><br/>
+            <p:growl id="msg" showDetail="true" life="3000" />
+            <p:dataTable var="category" value="#{categoryDAO.allCategories}">   <!-- receives all available categories (from DB) -->
+                <p:column headerText="CategoryId">
+                    <h:outputText value="#{category.categoryid}" /> <!-- Displays the CategoryID for that Category -->
+                </p:column>
+
+                <p:column headerText="CategoryName">
+                    <h:outputText value="#{category.categoryname}" />   <!-- Displays the CategoryName for that Category -->
+                </p:column>
+            </p:dataTable><br/>
+            
+            <p:panel header="CreatingCategories" style="width: 360px;">
+ 
+                <h:panelGrid id="ccPanel" columns="">
+                    
+                    <h:outputText value="CategoryName" />
+ 
+                    <p:inputText id="categoryName" value="#{categoryDAO.categoryName}" required = "true"></p:inputText> <!-- Whatever the user inputs will be sent to Java so it can be passed to the DB -->
+ 
+                    <p:message for="categoryName"></p:message>
+                    
+                </h:panelGrid>
+                <p:commandButton action="#{categoryDAO.CreateNewCategory()}" value="Create Category" update="ccForm" ajax="true"></p:commandButton> <!-- Calls the CreateNewCategory() method from CategoryDAO class -->
+            </p:panel>
+        </h:form>
+    </h:body>
+</html>

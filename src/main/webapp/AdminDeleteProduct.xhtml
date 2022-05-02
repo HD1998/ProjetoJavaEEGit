@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Delete Products Admin Page</title>
+    </h:head>
+    <h:body>
+        <h:form id = "dpForm">
+            <p:menubar> 
+                <p:menuitem value="Home Page" outcome="AdminProductsPage" /> 
+                <p:submenu label="Products">
+                    <p:menuitem value="Check My Products" outcome="AdminMyProducts" />
+                    <p:separator />
+                    <p:menuitem value="Create New Product" outcome="AdminCreateProduct" />
+                    <p:separator />
+                    <p:menuitem value="Update Products"  outcome="AdminUpdateProduct" />
+                    <p:separator />
+                    <p:menuitem value="Delete Products"  outcome="AdminDeleteProduct" />
+                </p:submenu>
+                <p:submenu label="Categories">
+                    <p:menuitem value="Create New Category" outcome="AdminCreateCategory" />
+                    <p:separator />
+                    <p:menuitem value="Update Categories" outcome="AdminUpdateCategory" />
+                    <p:separator />
+                    <p:menuitem value="Delete Categories" outcome="AdminDeleteCategory" />
+                </p:submenu>
+                <p:submenu label="SubCategories">
+                    <p:menuitem value="Create New SubCategory" outcome="AdminCreateSubCategory" />
+                    <p:separator />
+                    <p:menuitem value="Update SubCategories" outcome="AdminUpdateSubCategory" />
+                    <p:separator />
+                    <p:menuitem value="Delete SubCategories" outcome="AdminDeleteSubCategory" />
+                </p:submenu>
+                <p:menuitem value="Faturas" outcome="AdminFaturasPage" />
+            </p:menubar><br/>
+            <p:growl id="msg" showDetail="true" life="3000" />
+            <p:dataTable var="product" value="#{productDAO.allProducts}">   <!-- Receives all products in DB -->
+                
+                <p:column headerText="ProductId">
+                    <h:outputText value="#{product.productid}" />   <!-- Displays productId -->
+                </p:column>
+
+                <p:column headerText="ProductName">
+                    <h:outputText value="#{product.productname}" /> <!-- Displays productname -->
+                </p:column>
+                
+                <p:column headerText="Category">
+                    <h:outputText value="#{product.category.categoryname}" />   <!-- Displays categoryname -->
+                </p:column>
+                
+                <p:column headerText="SubCategory">
+                    <h:outputText value="#{product.subcategory.subcategoryname}" /> <!-- Displays subcategoryname -->
+                </p:column>
+                
+                <p:column headerText="EmployeeId">
+                    <h:outputText value="#{product.employee.employeeid}" /> <!-- Displays employeeid -->
+                </p:column>
+                
+                <p:column headerText="Price">
+                    <h:outputText value="#{product.price}" />   <!-- Displays price -->
+                </p:column>
+                
+                <p:column headerText="Stock">
+                    <h:outputText value="#{product.stock}" />   <!-- Displays stock -->
+                </p:column>
+                
+            </p:dataTable><br/>
+            
+            <p:panel header="Deleting Products" style="width: 360px;">
+                <h:panelGrid id="dpPanel" columns="">
+                    <p:selectOneMenu id="productId" value="#{productDAO.productId}" style="width:150px">     <!-- sends the selected value in the drop-down to productDAO -->
+                        <f:selectItem itemLabel="Select Product" itemValue="" noSelectionOption="true" />
+                        <f:selectItems value="#{productDAO.SelectProductsIdForAdmin()}" />  <!-- Receives the product id for every product in DB -->
+                    </p:selectOneMenu>
+ 
+                    <p:spacer></p:spacer>
+ 
+                    <p:commandButton action="#{productDAO.DeleteProudct()}" value="Delete Product" update="dpForm" ajax="true"></p:commandButton>   <!-- calls DeleteProudct() method -->
+                </h:panelGrid>
+            </p:panel>
+        </h:form>
+    </h:body> 
+</html>
